@@ -58,7 +58,7 @@ void displayproduct(product p[], int size ) {
 	}
 }
 
-int searchproduct(product p[], int size, int &searchid) {
+int searchproduct(product p[], int size, int searchid) {
 	int searchidindex = -1;
 	for (int i = 0;i < size;i++) {
 		if (searchid == p[i].id) {
@@ -87,6 +87,30 @@ void updateproducts(product p[], int size, int searchid) {
 	cin >> p[searchid].quantity;
 	p[searchid].unitsold = 0;
 	cout << "Units Sold:" << p[searchid].unitsold << endl;
+}
+
+void restockproducts(product p[], int size, int searchid, int addingquantity) {
+	int searchindex = searchproduct(p, size, searchid);
+	if (searchindex != -1) {
+		while (addingquantity <= 0) {
+			cout << "Stock should be greater than 0" << endl;
+			cout << "How much stock you want to add:";
+			cin >> addingquantity;
+		}
+		p[searchindex].quantity = p[searchindex].quantity + addingquantity;
+		cout << "  " << endl;
+		cout << "=======Quantity Added Successfully==========" << endl;
+		cout << "  " << endl;
+		cout << "Product ID:" << p[searchindex].id << endl;
+		cout << "Product Name:" << p[searchindex].name << endl;
+		cout << "Product Category:" << p[searchindex].category << endl;
+		cout << "Product New quantity:" << p[searchindex].quantity << endl;
+	}
+	else {
+		cout << "==============================" << endl;
+		cout << "This Product does not exist" << endl;
+		cout << "   " << endl;
+	}
 }
 
 
