@@ -113,6 +113,89 @@ void restockproducts(product p[], int size, int searchid, int addingquantity) {
 	}
 }
 
+void sellproduct(product p[], int size, int productid, int buyingquantity,sale s[],int space) {
+	int productindex = searchproduct(p, size, productid);
+	if (productindex != -1) {
+		while (buyingquantity <= 0) {
+			cout << "Enter quantity you want to buy:";
+			cin >> buyingquantity;
+		}
+		if (buyingquantity > p[productindex].quantity) {
+			cout << "Sorry!This Product is out of stock" << endl;
+			cout << "Please!Try any other product" << endl;
+		}
+		else {
+			p[productindex].quantity = p[productindex].quantity - buyingquantity;
+			p[productindex].unitsold = p[productindex].unitsold + buyingquantity;
+			cout << "================================" << endl;
+			cout << "Product is bought successfully" << endl;
+			cout << "===========================" << endl;
+			for (int i = 0;i < space;i++) {
+				if (i == productindex) {
+					s[productindex].saleid = 100 + i;
+					s[productindex].productid = p[productindex].id;
+					s[productindex].quantitysold = buyingquantity;
+					s[productindex].revenue = p[productindex].sellingprice * buyingquantity;
+					s[productindex].cost = p[productindex].costprice * buyingquantity;
+					s[productindex].profit = s[productindex].revenue - s[productindex].cost;
+				}
+			}
+		}
+	}
+	    else {
+		cout << "   " << endl;
+		cout << "=====Something went wrong=======" << endl;
+		cout << "  " << endl;
+		cout << "This Product does not exist" << endl;
+		cout << "  " << endl;
+	}
+}
+
+void deleteproduct(product p[], int size, int productid) {
+	int productindex = searchproduct(p, size, productid);
+	string useranswer;
+	if (productindex != -1) {
+		cout << "  " << endl;
+		cout << "After deletion all information of the product will be removed" << endl;
+		cout << "Are you sure you want to delete this product:Answer in Yes or No" << endl;
+		getline(cin >> ws, useranswer);
+		if (useranswer == "Yes") {
+			p[productindex].name = "Null";
+			p[productindex].category = "Null";
+			p[productindex].costprice = 0;
+			p[productindex].sellingprice = 0;
+			p[productindex].quantity = 0;
+			p[productindex].unitsold = 0;
+		}
+		else {
+			cout << "  " << endl;
+			cout << "Okay Your Product is not deleted and safely saved" << endl;
+			cout << "  " << endl;
+		}
+	}
+	else {
+		cout << "========================" << endl;
+		cout << "This id is wrong" << endl;
+		cout << "========================" << endl;
+	}
+}
+
+void displaysales(sale s[], int size) {
+		for (int i = 0;i < size;i++) {
+			if (s[i].quantitysold >= 1) {
+				cout << "   " << endl;
+				cout << "=========Saling History=========" << endl;
+				cout << "  " << endl;
+				cout << "Sale ID:" << s[i].saleid << endl;
+				cout << "Saled Product ID:" << s[i].productid << endl;
+				cout << "Quantity Sold:" << s[i].quantitysold << endl;
+				cout << "Revenue:" << s[i].revenue << endl;
+				cout << "Cost:" << s[i].cost << endl;
+				cout << "Profit:" << s[i].profit << endl;
+			}
+		}
+	}
+
 
 int main() {
 
