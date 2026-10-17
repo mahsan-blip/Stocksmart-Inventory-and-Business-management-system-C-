@@ -253,8 +253,117 @@ void salesreport(sale s[], int size) {
 	cout << "Total Gross profit:" << totalprofit << endl;
 }
 
+void businessanalytics(product p[], int size, sale s[], int space, int threshold) {
+	int totalproducts = p[0].id;
+	int totalstocks = 0;
+	double totalinventory = 0;
+	double totalinventorysellingcost = 0;
+	double totalrevenue = 0;
+	double totalgrossprofit = 0;
+	int zerostockproduct = 0;
+	int lowstockproduct = 0;
+	for (int i = 0;i < size;i++) {
+		totalgrossprofit = totalgrossprofit + s[i].profit;
+		totalrevenue = totalrevenue + s[i].revenue;
+		totalinventorysellingcost += p[i].sellingprice * p[i].quantity;
+		totalinventory += p[i].costprice * p[i].quantity;
+		totalstocks = totalstocks + p[i].quantity;
+		if (p[i].quantity <= threshold) {
+			lowstockproduct++;
+		}
+		if (p[i].quantity == 0) {
+			zerostockproduct++;
+		}
+		if (totalproducts < p[i].id) {
+			totalproducts = p[i].id;
+		}
+	}
+	cout << "  " << endl;
+	cout << "==================================" << endl;
+	cout << "=====Total Business Analytics=====" << endl;
+	cout << "  " << endl;
+	cout << "Total Products:" << totalproducts << endl;
+	cout << "Total Quantity:" << totalstocks << endl;
+	cout << "Total Inventory cost:" << totalinventory << endl;
+	cout << "Total Inventory selling cost:" << totalinventorysellingcost << endl;
+	cout << "Total Revenue from sales:" << totalrevenue << endl;
+	cout << "Total Gross profit from sales:" << totalgrossprofit << endl;
+	cout << "Product with zero stock available:" << zerostockproduct << endl;
+	cout << "Low Stock Product:" << lowstockproduct << endl;
+	cout << "   " << endl;
+}
 
+void topsellingproducts(sale s[], int space,product p[]) {
+	int firsthighest = s[0].quantitysold;
+	int secondhighest = s[0].quantitysold;
+	int thirdhighest = s[0].quantitysold;
+	int forthhighest = s[0].quantitysold;
+	int fifthhighest = s[0].quantitysold;
+	int index[5];
+	for (int i = 0;i < space;i++) {
+		if (firsthighest < s[i].quantitysold) {
+			firsthighest = s[i].quantitysold;
+			index[0] = i;
+		}
+	}
+	for (int i = 0;i < space;i++) {
+		if (secondhighest < s[i].quantitysold && s[i].quantitysold < firsthighest) {
+			secondhighest = s[i].quantitysold;
+			index[1] = i;
+		}
+	}
+	for (int i = 0;i < space;i++) {
+		if (thirdhighest < s[i].quantitysold && s[i].quantitysold < firsthighest && s[i].quantitysold < secondhighest) {
+			thirdhighest = s[i].quantitysold;
+			index[2] = i;
+		}
+	}
+	for (int i = 0;i < space;i++) {
+		if (forthhighest < s[i].quantitysold && s[i].quantitysold < firsthighest && s[i].quantitysold < secondhighest && s[i].quantitysold < thirdhighest) {
+			forthhighest = s[i].quantitysold;
+			index[3] = i;
+		}
+	}
+	for (int i = 0;i < space;i++) {
+		if (fifthhighest < s[i].quantitysold && s[i].quantitysold < firsthighest && s[i].quantitysold < secondhighest && s[i].quantitysold < thirdhighest && s[i].quantitysold < forthhighest) {
+			fifthhighest = s[i].quantitysold;
+			index[4] = i;
+		}
+	}
+	cout << "  " << endl;
+	cout << "======Top 5 Selling Products======" << endl;
+	cout << "  " << endl;
+	for (int i = 0;i < space;i++) {
+		cout << "Product ID:" << p[index[i]].id << endl;
+		cout << "Product Name:" << p[index[i]].name << endl;
+		cout << "Product category:" << p[index[i]].category << endl;
+		cout << "  " << endl;
+		cout << "  " << endl;
+	}
+}
+
+void displaymenu() {
+	cout << "=====================================" << endl;
+	cout << "               STOCKSMART            " << endl;
+	cout << "    INVENTORY & PROFIT MANAGEMENT" << endl;
+	cout << "=====================================" << endl;
+	cout << "1.Add New Product" << endl;
+	cout << "2.View All Products" << endl;
+	cout << "3.Search Product" << endl;
+	cout << "4.Update Product" << endl;
+	cout << "5.Restock Product" << endl;
+	cout << "6.Sell Product" << endl;
+	cout << "7.Delete Product" << endl;
+	cout << "8.Low Stock Product" << endl;
+	cout << "9.Sales Report" << endl;
+	cout << "10.Business Analytics" << endl;
+	cout << "11.Top Selling Products" << endl;
+	cout << "12.Exit" << endl;
+	cout << "  " << endl;
+	cout << "  " << endl;
+	cout << "Enter your choice:";
+}
 int main() {
-
+	
 	return 0;
 }
