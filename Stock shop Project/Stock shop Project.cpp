@@ -75,24 +75,34 @@ int searchproduct(product p[], int size, int searchid) {
 }
 
 void updateproducts(product p[], int size, int searchid) {
-	cout << "Product ID should reamin same.It cannot be changed." << endl;
-	cout << "Product ID:" << p[searchid].id << endl;
-	cout << "Enter Product Name:";
-	getline(cin >> ws, p[searchid].name);
-	cout << "Enter Product Category:";
-	getline(cin >> ws, p[searchid].category);
-	while (p[searchid].costprice<=0){
-		cout << "Cost Price should be greater than 0.Enter Cost Price:";
-		cin >> p[searchid].costprice;
+	int productid = searchproduct(p, size, searchid);
+	if (productid != -1) {
+		cout << "Product ID should reamin same.It cannot be changed." << endl;
+		cout << "Product ID:" << p[searchid].id << endl;
+		cout << "Enter Product Name:";
+		getline(cin >> ws, p[searchid].name);
+		cout << "Enter Product Category:";
+		getline(cin >> ws, p[searchid].category);
+		while (p[searchid].costprice <= 0) {
+			cout << "Cost Price should be greater than 0.Enter Cost Price:";
+			cin >> p[searchid].costprice;
+		}
+		while (p[searchid].sellingprice <= 0 || p[searchid].sellingprice <= p[searchid].costprice) {
+			cout << "Selling Price should be greater than 0 and costprice.Enter Sellingprice:";
+			cin >> p[searchid].sellingprice;
+		}
+		cout << "Enter Quantity:";
+		cin >> p[searchid].quantity;
+		p[searchid].unitsold = 0;
+		cout << "Units Sold:" << p[searchid].unitsold << endl;
 	}
-	while (p[searchid].sellingprice<=0||p[searchid].sellingprice<=p[searchid].costprice){
-		cout << "Selling Price should be greater than 0 and costprice.Enter Sellingprice:";
-		cin >> p[searchid].sellingprice;
+	else {
+		cout << "  " << endl;
+		cout << "==========================" << endl;
+		cout << "This ID does not exist" << endl;
+		cout << "Try with the ID in which you want to update product" << endl;
+		cout << "  " << endl;
 	}
-	cout << "Enter Quantity:";
-	cin >> p[searchid].quantity;
-	p[searchid].unitsold = 0;
-	cout << "Units Sold:" << p[searchid].unitsold << endl;
 }
 
 void restockproducts(product p[], int size, int searchid, int addingquantity) {
@@ -119,7 +129,7 @@ void restockproducts(product p[], int size, int searchid, int addingquantity) {
 	}
 }
 
-void sellproduct(product p[], int size, int productid, int buyingquantity,sale s[],int space) {
+void sellproduct(product p[], int size, int productid, int buyingquantity,sale s[],int &space) {
 	int salecount = 0;
 	int productindex = searchproduct(p, size, productid);
 	if (productindex != -1) {
@@ -205,7 +215,7 @@ void displaysales(sale s[], int size) {
 		}
 	}
 
-void lowstockreport(product p[], int size,int thresholdunit) {
+void lowstockreport(product p[], int size,int &thresholdunit) {
 	cout << "  " << endl;
 	cout << "======Low Stock Product=======" << endl;
 	cout << "  " << endl;
@@ -215,6 +225,32 @@ void lowstockreport(product p[], int size,int thresholdunit) {
 			cout << p[i].id << "    " << p[i].name << "           " << p[i].quantity << "    " << endl;
 		}
 	}
+}
+
+void salesreport(sale s[], int size) {
+	int totalsales = s[0].saleid;
+	int totalunitssold = 0;
+	double totalrevenue = 0;
+	double totalcost = 0;
+	double totalprofit = 0;
+	for (int i = 0;i < size;i++) {
+		totalprofit = totalprofit + s[i].profit;
+		totalcost = totalcost + s[i].cost;
+		totalrevenue = totalrevenue + s[i].revenue;
+		totalunitssold = totalunitssold + s[i].quantitysold;
+		if (totalsales < s[i].saleid) {
+			totalsales = s[i].saleid;
+		}
+	}
+	cout << "  " << endl;
+	cout << "===============================" << endl;
+	cout << "=======Total Sales Report======" << endl;
+	cout << "   " << endl;
+	cout << "Total Successful Sales:" << totalsales << endl;
+	cout << "Total items sold:" << totalunitssold;
+	cout << "Total Revenue:" << totalrevenue << endl;
+	cout << "Total cost of sold items:" << totalcost << endl;
+	cout << "Total Gross profit:" << totalprofit << endl;
 }
 
 
