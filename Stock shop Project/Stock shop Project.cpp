@@ -23,7 +23,7 @@ struct sale {
 
 void addproduct(product p[], int size) {
 	for (int i = 0;i < size;i++) {
-		p[i].id = 100 + i;
+		p[i].id = i + 1;
 		cout << "Product ID:" << p[i].id << endl;
 		cout << "Enter Product Name:";
 		getline(cin >> ws, p[i].name);
@@ -114,6 +114,7 @@ void restockproducts(product p[], int size, int searchid, int addingquantity) {
 }
 
 void sellproduct(product p[], int size, int productid, int buyingquantity,sale s[],int space) {
+	int salecount = 0;
 	int productindex = searchproduct(p, size, productid);
 	if (productindex != -1) {
 		while (buyingquantity <= 0) {
@@ -130,14 +131,15 @@ void sellproduct(product p[], int size, int productid, int buyingquantity,sale s
 			cout << "================================" << endl;
 			cout << "Product is bought successfully" << endl;
 			cout << "===========================" << endl;
-			for (int i = 0;i < space;i++) {
-				if (i == productindex) {
-					s[productindex].saleid = 100 + i;
-					s[productindex].productid = p[productindex].id;
-					s[productindex].quantitysold = buyingquantity;
-					s[productindex].revenue = p[productindex].sellingprice * buyingquantity;
-					s[productindex].cost = p[productindex].costprice * buyingquantity;
-					s[productindex].profit = s[productindex].revenue - s[productindex].cost;
+			salecount++;
+			for (int i = 0;i < salecount;i++) {
+				if (s[i].saleid==0) {
+					s[i].saleid = i + 1;
+					s[i].productid = p[productindex].id;
+					s[i].quantitysold = buyingquantity;
+					s[i].revenue = p[productindex].sellingprice * buyingquantity;
+					s[i].cost = p[productindex].costprice * buyingquantity;
+					s[i].profit = s[i].revenue - s[i].cost;
 				}
 			}
 		}
@@ -196,6 +198,17 @@ void displaysales(sale s[], int size) {
 		}
 	}
 
+void lowstockreport(product p[], int size,int thresholdunit) {
+	cout << "  " << endl;
+	cout << "======Low Stock Product=======" << endl;
+	cout << "  " << endl;
+	cout << "ID" << "    " << "Product Name" << "    " << "Quantity" << "    " << endl;
+	for (int i = 0;i < size;i++) {
+		if (p[i].quantity <= thresholdunit) {
+			cout << p[i].id << "    " << p[i].name << "           " << p[i].quantity << "    " << endl;
+		}
+	}
+}
 
 int main() {
 
