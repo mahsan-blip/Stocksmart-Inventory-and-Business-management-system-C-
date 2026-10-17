@@ -29,33 +29,39 @@ void addproduct(product p[], int size) {
 		getline(cin >> ws, p[i].name);
 		cout << "Enter Product Category:";
 		getline(cin >> ws, p[i].category);
-		while (p[i].costprice <= 0) {
+		do {
 			cout << "Cost Price should be greater than 0.Enter Cost Price:";
 			cin >> p[i].costprice;
-		}
-		while (p[i].sellingprice <= 0 || p[i].sellingprice <= p[i].costprice) {
+		} while (p[i].costprice <= 0);
+		do {
 			cout << "Selling Price should be greater than 0 and costprice.Enter Sellingprice:";
 			cin >> p[i].sellingprice;
-		}
-		cout << "Enter Quantity:";
-		cin >> p[i].quantity;
+		} while (p[i].sellingprice <= 0 || p[i].sellingprice < p[i].costprice);
+		do {
+			cout << "Quantity should be greater than 0.Enter Quantity:";
+			cin >> p[i].quantity;
+		} while (p[i].quantity <= 0);
 		p[i].unitsold = 0;
 	}
 }
 
 void displayproduct(product p[], int size ) {
-	for (int i = 0;i < size;i++) {
 		cout << "     " << endl;
 		cout << "========All Products Information========" << endl;
 		cout << "    " << endl;
-		cout << "Product ID:" << p[i].id << endl;
-		cout << "Product Name:" << p[i].name << endl;
-		cout << "Product Category:" << p[i].category << endl;
-		cout << "Product Selling price:" << p[i].sellingprice << endl;
-		cout << "Product Cost Price:" << p[i].costprice << endl;
-		cout << "Product Quantity:" << p[i].quantity << endl;
-		cout << "  " << endl;
-	}
+		for (int i = 0;i < size;i++) {
+			cout << "  " << endl;
+			cout << "==============================" << endl;
+			cout << "Product ID:" << p[i].id << endl;
+			cout << "Name:" << p[i].name << endl;
+			cout << "Category:" << p[i].category << endl;
+			cout << "Cost Price:" << p[i].costprice << endl;
+			cout << "Selling Price:" << p[i].sellingprice << endl;
+			cout << "Quantity:" << p[i].quantity << endl;
+			cout << "Units Sold:" << p[i].unitsold << endl;
+			cout << "==============================" << endl;
+			cout << "  " << endl;
+		}
 }
 
 int searchproduct(product p[], int size, int searchid) {
@@ -176,9 +182,10 @@ void deleteproduct(product p[], int size, int productid) {
 		}
 	}
 	else {
-		cout << "========================" << endl;
+		cout << "==========================" << endl;
 		cout << "This id is wrong" << endl;
-		cout << "========================" << endl;
+		cout << "Try again with correct ID" << endl;
+		cout << "==========================" << endl;
 	}
 }
 
@@ -209,6 +216,7 @@ void lowstockreport(product p[], int size,int thresholdunit) {
 		}
 	}
 }
+
 
 int main() {
 
