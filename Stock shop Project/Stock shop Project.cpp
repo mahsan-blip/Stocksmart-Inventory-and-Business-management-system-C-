@@ -21,27 +21,30 @@ struct sale {
 	double profit;
 };
 
-void addproduct(product p[], int size) {
-	for (int i = 0;i < size;i++) {
-		p[i].id = i + 1;
-		cout << "Product ID:" << p[i].id << endl;
-		cout << "Enter Product Name:";
-		getline(cin >> ws, p[i].name);
-		cout << "Enter Product Category:";
-		getline(cin >> ws, p[i].category);
-		do {
-			cout << "Cost Price should be greater than 0.Enter Cost Price:";
-			cin >> p[i].costprice;
-		} while (p[i].costprice <= 0);
-		do {
-			cout << "Selling Price should be greater than 0 and costprice.Enter Sellingprice:";
-			cin >> p[i].sellingprice;
-		} while (p[i].sellingprice <= 0 || p[i].sellingprice < p[i].costprice);
-		do {
-			cout << "Quantity should be greater than 0.Enter Quantity:";
-			cin >> p[i].quantity;
-		} while (p[i].quantity <= 0);
-		p[i].unitsold = 0;
+void addproduct(product p[], int size,int count) {
+	int end = size + count;
+	for (int i = size;i < end;i++) {
+		if (p[i].id == 0) {
+			p[i].id = i + 1;
+			cout << "Product ID:" << p[i].id << endl;
+			cout << "Enter Product Name:";
+			getline(cin >> ws, p[i].name);
+			cout << "Enter Product Category:";
+			getline(cin >> ws, p[i].category);
+			do {
+				cout << "Cost Price should be greater than 0.Enter Cost Price:";
+				cin >> p[i].costprice;
+			} while (p[i].costprice <= 0);
+			do {
+				cout << "Selling Price should be greater than 0 and costprice.Enter Sellingprice:";
+				cin >> p[i].sellingprice;
+			} while (p[i].sellingprice <= 0 || p[i].sellingprice < p[i].costprice);
+			do {
+				cout << "Quantity should be greater than 0.Enter Quantity:";
+				cin >> p[i].quantity;
+			} while (p[i].quantity <= 0);
+			p[i].unitsold = 0;
+		}
 	}
 }
 
@@ -72,6 +75,24 @@ int searchproduct(product p[], int size, int searchid) {
 		}
 	}
 	return searchidindex;
+}
+
+void displaysearchedproduct(product p[], int size, int searchid) {
+	int idindex = searchproduct(p, size, searchid);
+	if (idindex == -1) {
+		cout << "=====================================" << endl;
+		cout << "Wrong ID or This Product may not exist" << endl;
+		cout << "  " << endl;
+	}
+	else {
+		cout << "========Your searched product========" << endl;
+		cout << "Product ID:" << p[idindex].id << endl;
+		cout << "Name:" << p[idindex].name << endl;
+		cout << "Category:" << p[idindex].category << endl;
+		cout << "Selling price:" << p[idindex].sellingprice << endl;
+		cout << "Cost Price:" << p[idindex].costprice << endl;
+		cout << "Quantity Available:" << p[idindex].quantity << endl;
+	}
 }
 
 void updateproducts(product p[], int size, int searchid) {
@@ -184,6 +205,9 @@ void deleteproduct(product p[], int size, int productid) {
 			p[productindex].sellingprice = 0;
 			p[productindex].quantity = 0;
 			p[productindex].unitsold = 0;
+			cout << "===============================" << endl;
+			cout << "Product is Deleted Successfully" << endl;
+			cout << "ID" << p[productindex].id << " This ID is empty you can add product here from product updates." << endl;
 		}
 		else {
 			cout << "  " << endl;
@@ -251,6 +275,7 @@ void salesreport(sale s[], int size) {
 	cout << "Total Revenue:" << totalrevenue << endl;
 	cout << "Total cost of sold items:" << totalcost << endl;
 	cout << "Total Gross profit:" << totalprofit << endl;
+	cout << "  " << endl;
 }
 
 void businessanalytics(product p[], int size, sale s[], int space, int threshold) {
@@ -337,6 +362,7 @@ void topsellingproducts(sale s[], int space,product p[]) {
 		cout << "Product ID:" << p[index[i]].id << endl;
 		cout << "Product Name:" << p[index[i]].name << endl;
 		cout << "Product category:" << p[index[i]].category << endl;
+		cout << "Selling Price:" << p[index[i]].sellingprice << endl;
 		cout << "  " << endl;
 		cout << "  " << endl;
 	}
@@ -355,15 +381,100 @@ void displaymenu() {
 	cout << "6.Sell Product" << endl;
 	cout << "7.Delete Product" << endl;
 	cout << "8.Low Stock Product" << endl;
-	cout << "9.Sales Report" << endl;
-	cout << "10.Business Analytics" << endl;
-	cout << "11.Top Selling Products" << endl;
-	cout << "12.Exit" << endl;
+	cout << "9.View All Sales" << endl;
+	cout << "10.Sales Report" << endl;
+	cout << "11.Business Analytics" << endl;
+	cout << "12.Top Selling Products" << endl;
+	cout << "13.Exit" << endl;
 	cout << "  " << endl;
 	cout << "  " << endl;
 	cout << "Enter your choice:";
 }
 int main() {
-	
+	product p[100];
+	sale s[500];
+	int choice = 0;
+	int numberofproducts = 0;
+	int totalproducts = 0;
+	int productid = 0;
+	int restockquantity = 0;
+	int numberofsales = 0;
+	int buyingquantity = 0;
+	int threshold = 0;
+	do {
+		displaymenu();
+		cin >> choice;
+		switch (choice) {
+		case 1:
+			cout << "How many number of Products you want to add?" << endl;
+			cin >> numberofproducts;
+			if (totalproducts + numberofproducts >= 100) {
+				cout << "==========================================================" << endl;
+				cout << "Product capacity is full. Now you cannot add more products" << endl;
+				cout << "  " << endl;
+			}
+			else {
+				addproduct(p, totalproducts, numberofproducts);
+				totalproducts = totalproducts + numberofproducts;
+			}
+			break;
+		case 2:
+			displayproduct(p, totalproducts);
+			break;
+		case 3:
+			cout << "Enter Product ID:";
+			cin >> productid;
+			displaysearchedproduct(p, totalproducts, productid);
+			break;
+		case 4:
+			cout << "Enter Product ID:";
+			cin >> productid;
+			updateproducts(p, totalproducts, productid);
+			break;
+		case 5:
+			cout << "Enter Product ID:";
+			cin >> productid;
+			restockproducts(p, totalproducts, productid, restockquantity);
+			break;
+		case 6:
+			cout << "Enter product ID:";
+			cin >> productid;
+			sellproduct(p, totalproducts, productid, buyingquantity, s, numberofsales);
+			break;
+		case 7:
+			cout << "Enter Product ID:";
+			cin >> productid;
+			deleteproduct(p, totalproducts, productid);
+			break;
+		case 8:
+			cout << "Write Threshold quantity(Means after hiow much quantity product wil be enter in low stock):";
+			cin >> threshold;
+			lowstockreport(p, totalproducts, threshold);
+			break;
+		case 9:
+			displaysales(s, numberofsales);
+			break;
+		case 10:
+			salesreport(s, numberofsales);
+			break;
+		case 11:
+			businessanalytics(p, totalproducts, s, numberofsales, threshold);
+			break;
+		case 12:
+			topsellingproducts(s, numberofsales, p);
+			break;
+		case 13:
+			cout << "===============================" << endl;
+			cout << "Thank you for using this System" << endl;
+			cout << "  " << endl;
+			break;
+		default:
+			cout << "  " << endl;
+			cout << "=====Wrong Input=====" << endl;
+			cout << "Try Again" << endl;
+			cout << "  " << endl;
+			break;
+		}
+	} while (choice != 13);
 	return 0;
 }
