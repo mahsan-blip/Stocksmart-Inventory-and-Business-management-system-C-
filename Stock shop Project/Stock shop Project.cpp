@@ -24,7 +24,6 @@ struct sale {
 void addproduct(product p[], int size,int count) {
 	int end = size + count;
 	for (int i = size;i < end;i++) {
-		if (p[i].id == 0) {
 			p[i].id = i + 1;
 			cout << "Product ID:" << p[i].id << endl;
 			cout << "Enter Product Name:";
@@ -44,7 +43,6 @@ void addproduct(product p[], int size,int count) {
 				cin >> p[i].quantity;
 			} while (p[i].quantity <= 0);
 			p[i].unitsold = 0;
-		}
 	}
 }
 
@@ -85,6 +83,7 @@ void displaysearchedproduct(product p[], int size, int searchid) {
 		cout << "  " << endl;
 	}
 	else {
+		cout << "  " << endl;
 		cout << "========Your searched product========" << endl;
 		cout << "Product ID:" << p[idindex].id << endl;
 		cout << "Name:" << p[idindex].name << endl;
@@ -99,23 +98,23 @@ void updateproducts(product p[], int size, int searchid) {
 	int productid = searchproduct(p, size, searchid);
 	if (productid != -1) {
 		cout << "Product ID should reamin same.It cannot be changed." << endl;
-		cout << "Product ID:" << p[searchid].id << endl;
+		cout << "Product ID:" << p[productid].id << endl;
 		cout << "Enter Product Name:";
-		getline(cin >> ws, p[searchid].name);
+		getline(cin >> ws, p[productid].name);
 		cout << "Enter Product Category:";
-		getline(cin >> ws, p[searchid].category);
-		while (p[searchid].costprice <= 0) {
+		getline(cin >> ws, p[productid].category);
+		do {
 			cout << "Cost Price should be greater than 0.Enter Cost Price:";
-			cin >> p[searchid].costprice;
-		}
-		while (p[searchid].sellingprice <= 0 || p[searchid].sellingprice <= p[searchid].costprice) {
+			cin >> p[productid].costprice;
+		} while (p[productid].costprice <= 0);
+		do{ 
 			cout << "Selling Price should be greater than 0 and costprice.Enter Sellingprice:";
-			cin >> p[searchid].sellingprice;
-		}
+			cin >> p[productid].sellingprice;
+		} while (p[productid].sellingprice <= 0 || p[productid].sellingprice <= p[productid].costprice);
 		cout << "Enter Quantity:";
-		cin >> p[searchid].quantity;
-		p[searchid].unitsold = 0;
-		cout << "Units Sold:" << p[searchid].unitsold << endl;
+		cin >> p[productid].quantity;
+		p[productid].unitsold = 0;
+		cout << "Units Sold:" << p[productid].unitsold << endl;
 	}
 	else {
 		cout << "  " << endl;
@@ -177,6 +176,7 @@ void sellproduct(product p[], int size, int productid, int buyingquantity,sale s
 					s[i].revenue = p[productindex].sellingprice * buyingquantity;
 					s[i].cost = p[productindex].costprice * buyingquantity;
 					s[i].profit = s[i].revenue - s[i].cost;
+					space++;
 				}
 			}
 		}
@@ -207,7 +207,7 @@ void deleteproduct(product p[], int size, int productid) {
 			p[productindex].unitsold = 0;
 			cout << "===============================" << endl;
 			cout << "Product is Deleted Successfully" << endl;
-			cout << "ID" << p[productindex].id << " This ID is empty you can add product here from product updates." << endl;
+			cout << "ID:" << p[productindex].id << " This ID is empty you can add product here from product updates." << endl;
 		}
 		else {
 			cout << "  " << endl;
@@ -241,12 +241,12 @@ void displaysales(sale s[], int size) {
 
 void lowstockreport(product p[], int size,int &thresholdunit) {
 	cout << "  " << endl;
-	cout << "======Low Stock Product=======" << endl;
+	cout << "========Low Stock Product=======" << endl;
 	cout << "  " << endl;
 	cout << "ID" << "    " << "Product Name" << "    " << "Quantity" << "    " << endl;
 	for (int i = 0;i < size;i++) {
 		if (p[i].quantity <= thresholdunit) {
-			cout << p[i].id << "    " << p[i].name << "           " << p[i].quantity << "    " << endl;
+			cout << p[i].id << "     " << p[i].name << "           " << p[i].quantity << "    " << endl;
 		}
 	}
 }
@@ -391,8 +391,8 @@ void displaymenu() {
 	cout << "Enter your choice:";
 }
 int main() {
-	product p[100];
-	sale s[500];
+	product p[100] = {};
+	sale s[500] = {};
 	int choice = 0;
 	int numberofproducts = 0;
 	int totalproducts = 0;
