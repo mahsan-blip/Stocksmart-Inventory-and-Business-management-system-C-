@@ -374,8 +374,6 @@ void topsellingproducts(product p[],int size,int space) {
 	int first = 0;
 	int second = 0;
 	int third = 0;
-	int fourth = 0;
-	int fifth = 0;
 	int index[3] = {};
 	if (space < 3) {
 		cout << "=============================================================" << endl;
