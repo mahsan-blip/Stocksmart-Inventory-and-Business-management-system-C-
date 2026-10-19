@@ -174,9 +174,6 @@ void sellproduct(product p[], int size, int productid, int buyingquantity,sale s
 			else {
 				p[productindex].quantity = p[productindex].quantity - buyingquantity;
 				p[productindex].unitsold = p[productindex].unitsold + buyingquantity;
-				cout << "================================" << endl;
-				cout << "Product is bought successfully" << endl;
-				cout << "================================" << endl;
 				s[space].saleid = space + 1;
 				s[space].productid = p[productindex].id;
 				s[space].quantitysold += buyingquantity;
@@ -184,6 +181,16 @@ void sellproduct(product p[], int size, int productid, int buyingquantity,sale s
 				s[space].cost = p[productindex].costprice * buyingquantity;
 				s[space].profit = s[space].revenue - s[space].cost;
 				space++;
+				cout << "================================" << endl;
+				cout << "Product is bought successfully" << endl;
+				cout << "================================" << endl;
+				cout << "  " << endl;
+                cout << "Product ID                  :" << p[productindex].id << endl;
+                cout << "Name                        :" << p[productindex].name << endl;
+                cout << "Buying Quantity             :" << buyingquantity << endl;
+                cout << "Selling price               :" << p[productindex].sellingprice << endl;
+                cout << "Total bill                  :" << p[productindex].sellingprice * buyingquantity << endl;
+                cout << "  " << endl;
 			}
 		}
 		else {
