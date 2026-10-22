@@ -19,7 +19,7 @@ A concole based Inventory and Business Managemnt system built in C++.
 
 ## Concepts used
 
-- Strctures
+- Structures
 - Functions
 - Arrays
 - loops
