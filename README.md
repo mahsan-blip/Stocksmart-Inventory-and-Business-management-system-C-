@@ -1,6 +1,6 @@
 # Stocksmart : Inventory and Business Management System
 
-A concole based Inventory and Business Managemnt system built in C++.
+A console based Inventory and Business Managemnt system built in C++.
 
 | Features | Function Name | Description |
 |---|---|---|
